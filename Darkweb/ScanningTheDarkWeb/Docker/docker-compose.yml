@@ -1,0 +1,23 @@
+version: '2'
+services:
+  tor01:
+    restart: always
+    image: dockage/tor-privoxy:latest
+  tor02:
+    restart: always
+    image: dockage/tor-privoxy:latest
+  tor03:
+    restart: always
+    image: dockage/tor-privoxy:latest
+  haproxy:
+    image: haproxy:latest
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    links:
+      - tor01
+      - tor02
+      - tor03
+    ports:
+      - "8888:8888"
+      - "8118:8118"
+    restart: on-failure
